@@ -2,10 +2,13 @@ import streamlit as st
 import openai
 from openai import OpenAI
 import json
+import random
 import os
 from typing import Dict, Any
 import uuid
 from datetime import datetime
+from google.cloud import firestore
+from google.oauth2 import service_account
 
 # Page configuration
 st.set_page_config(
@@ -76,7 +79,7 @@ def initialize_openai_client():
         client = OpenAI(api_key=api_key)
         return client
     except Exception as e:
-        st.error("⚠️ OpenAI API configuration error. Please check your secrets configuration.")
+        st.error("OpenAI API configuration error. Please check your secrets configuration.")
         st.stop()
         return None
 
@@ -335,7 +338,17 @@ def main():
             st.experimental_rerun()
     
     elif responses and not client:
-        st.error("⚠️ Unable to generate recommendations. Please check the configuration.")
+        st.error("Unable to generate recommendations. Please check the configuration.")
 
+
+# Functions to interact with Firebase
+def store_indoro_responses(responses):
+    # Generate a Version 4 (random) UUID
+    my_uuid = uuid.uuid4()
+    print(f"Random UUID: {my_uuid}")
+    key_dict = json.loads(st.secrets["textkey"])
+    creds = service_account.Credentials.from_service_account_info(key_dict)
+    db = firestore.Client(credentials=creds, project="Indoro")
+    db.collection("responses").document(my_uuid).set(responses)
 if __name__ == "__main__":
     main()
