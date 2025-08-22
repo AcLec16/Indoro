@@ -337,7 +337,7 @@ def main():
 # Functions to interact with Firebase
 def store_indoro_responses(responses):
     # Generate a Version 4 (random) UUID
-    my_uuid = uuid.uuid4()
+    my_uuid = str(uuid.uuid4())
     print(f"Random UUID: {my_uuid}")
     key_dict = json.loads(st.secrets["FIREBASE_KEY"])
     creds = service_account.Credentials.from_service_account_info(key_dict)
