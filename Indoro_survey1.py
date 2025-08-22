@@ -283,17 +283,10 @@ def display_recommendation(recommendation: str, responses: Dict[str, Any]):
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Save to Firebase
-    response_id = save_to_firebase(responses, recommendation)
-    st.success(f"✅ Your responses have been saved! Reference ID: {response_id[:8]}...")
+    response_id = store_indoro_responses(responses)
     
     # Add download option
-    st.download_button(
-        label="📄 Download Recommendation",
-        data=recommendation,
-        file_name="korea_job_recommendation.txt",
-        mime="text/plain",
-        use_container_width=True
-    )
+
 
 def main():
     """Main application logic."""
