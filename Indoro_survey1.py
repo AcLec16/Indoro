@@ -341,7 +341,7 @@ def store_indoro_responses(responses):
     print(f"Random UUID: {my_uuid}")
     key_dict = json.loads(st.secrets["FIREBASE_KEY"])
     creds = service_account.Credentials.from_service_account_info(key_dict)
-    db = firestore.Client(credentials=creds, project="Indoro")
+    db = firestore.Client(credentials=creds, project="indoro-fe1e2")
     db.collection("responses").document(my_uuid).set(responses)
 if __name__ == "__main__":
     main()
