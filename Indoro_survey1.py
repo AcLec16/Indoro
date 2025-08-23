@@ -12,8 +12,8 @@ from google.oauth2 import service_account
 
 # Page configuration
 st.set_page_config(
-    page_title="South Korea Job Matcher",
-    page_icon="🇰🇷",
+    page_title="Indoro - Labour Market Survey",
+    page_icon="🇰🇷🇮🇳",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -84,124 +84,98 @@ def initialize_openai_client():
         return None
 
 def create_survey_form():
-    """Create the 15-question PESTLE survey form with simple answers."""
-    st.markdown('<div class="main-header">🇰🇷 South Korea Job Matcher</div>', unsafe_allow_html=True)
-    st.markdown("### Discover your ideal career path in South Korea's dynamic job market!")
+    """Create a fully multiple-choice career survey for Indian college students exploring the Korean job market."""
+    st.markdown('<div class="main-header">🇰🇷 Explore Careers in South Korea</div>', unsafe_allow_html=True)
+    st.markdown("### Discover which career paths in Korea align with your skills and interests!")
     st.markdown("---")
     
-    # Initialize session state for responses
     if 'survey_responses' not in st.session_state:
         st.session_state.survey_responses = {}
     
-    with st.form("pestle_survey"):
+    with st.form("korea_career_survey"):
         responses = {}
         
-        # POLITICAL FACTORS (3 questions)
-        st.markdown('<div class="section-header">🏛️ Political & Legal</div>', unsafe_allow_html=True)
+        # Personal Information
+        st.markdown('<div class="section-header">👤 Personal Information</div>', unsafe_allow_html=True)
+        responses['name'] = st.text_input("1. Full Name")
+        responses['college'] = st.text_input("2. College/University")
+        responses['email'] = st.text_input("3. Email Address")
         
-        responses['visa_status'] = st.radio(
-            "1. What is your work authorization status in South Korea?",
-            ["Korean citizen", "Have work visa", "Need work visa", "Student visa"],
-            key="q1"
-        )
-        
+        # Academic and Career Interests
+        st.markdown('<div class="section-header">🎓 Academic & Career Interests</div>', unsafe_allow_html=True)
         responses['sector_preference'] = st.radio(
-            "2. Which sector do you prefer?",
-            ["Government/Public", "Private companies", "Startups", "No preference"],
-            key="q2"
+            "4. Which sector are you most interested in exploring in Korea?",
+            ["Technology/IT", "Finance/Consulting", "Education", "Healthcare", "Startups/Entrepreneurship", "Green/Energy", "Entertainment/Media", "Other"],
+            key="sector_preference"
         )
-        
-        responses['work_regulations'] = st.radio(
-            "3. How do you feel about following strict workplace rules?",
-            ["I like clear rules", "It's okay", "I prefer flexibility", "I don't like many rules"],
-            key="q3"
+        responses['job_stability'] = st.radio(
+            "5. Which type of career path appeals to you most?",
+            ["Stable and structured", "Dynamic and high-growth", "A balance of both", "Flexible/freelance options"],
+            key="job_stability"
         )
-        
-        # ECONOMIC FACTORS (3 questions)
-        st.markdown('<div class="section-header">💰 Economic Priorities</div>', unsafe_allow_html=True)
-        
-        responses['salary_priority'] = st.radio(
-            "4. What matters most to you about salary?",
-            ["High starting salary", "Steady growth over time", "Just enough to live well", "Money isn't my priority"],
-            key="q4"
-        )
-        
         responses['work_hours'] = st.radio(
-            "5. What work schedule do you prefer?",
-            ["Standard 9-6", "Flexible hours", "Long hours, high pay", "Part-time work"],
-            key="q5"
+            "6. Preferred work-life balance?",
+            ["Regular 9-6 schedule", "Flexible hours", "Project-based/workload varies", "Part-time/freelance"],
+            key="work_hours"
         )
         
-        responses['job_security'] = st.radio(
-            "6. What's more important to you?",
-            ["Job security", "Career growth", "Both equally", "Work-life balance"],
-            key="q6"
+        # Skills and Technical Competence
+        st.markdown('<div class="section-header">💻 Skills & Technology</div>', unsafe_allow_html=True)
+        responses['tech_comfort'] = st.radio(
+            "7. Comfort with technology in academics or projects?",
+            ["Expert (coding, data, design tools)", "Comfortable with software tools", "Basic (Word, Excel, presentations)", "Need more practice with tech"],
+            key="tech_comfort"
         )
-        
-        # SOCIAL FACTORS (3 questions)
-        st.markdown('<div class="section-header">👥 Social & Cultural</div>', unsafe_allow_html=True)
-        
-        responses['korean_language'] = st.radio(
-            "7. How well do you speak Korean?",
-            ["Native/Fluent", "Good (can work in Korean)", "Basic (need help)", "Beginner/None"],
-            key="q7"
+        responses['digital_skills'] = st.radio(
+            "8. What best describes your technical skills?",
+            ["Programming/Data Analysis", "Software/Office tools", "Basic computer skills", "No particular skills"],
+            key="digital_skills"
         )
-        
-        responses['work_style'] = st.radio(
-            "8. What work environment do you prefer?",
-            ["Traditional Korean office", "International company", "Modern startup", "Remote work"],
-            key="q8"
-        )
-        
-        responses['team_work'] = st.radio(
-            "9. How do you like to work?",
-            ["In a team", "Independently", "Mix of both", "Leading others"],
-            key="q9"
-        )
-        
-        # TECHNOLOGICAL FACTORS (3 questions)
-        st.markdown('<div class="section-header">💻 Technology Skills</div>', unsafe_allow_html=True)
-        
-        responses['tech_skills'] = st.radio(
-            "10. How would you describe your tech skills?",
-            ["Expert (programming, etc.)", "Good (comfortable with software)", "Basic (email, office)", "Need help with technology"],
-            key="q10"
-        )
-        
         responses['ai_interest'] = st.radio(
-            "11. How do you feel about AI and automation?",
-            ["Very interested", "Somewhat interested", "Neutral", "Prefer traditional work"],
-            key="q11"
+            "9. Interest in AI or automation in your career?",
+            ["Very interested", "Somewhat interested", "Neutral", "Not interested"],
+            key="ai_interest"
         )
         
-        responses['digital_comfort'] = st.radio(
-            "12. How comfortable are you learning new software?",
-            ["Love learning new tools", "Comfortable if needed", "Prefer familiar tools", "Avoid new technology"],
-            key="q12"
+        # Language and Adaptability
+        st.markdown('<div class="section-header">🗣️ Language & Adaptability</div>', unsafe_allow_html=True)
+        responses['korean_language'] = st.radio(
+            "10. Korean language proficiency?",
+            ["Fluent", "Conversational", "Beginner/Just started", "No experience"],
+            key="korean_language"
         )
-        
-        # ENVIRONMENTAL FACTORS (3 questions)
-        st.markdown('<div class="section-header">🌱 Environmental & Lifestyle</div>', unsafe_allow_html=True)
-        
-        responses['sustainability'] = st.radio(
-            "13. How important is environmental work to you?",
-            ["Very important", "Somewhat important", "Not important", "I don't care"],
-            key="q13"
+        responses['cultural_adaptability'] = st.radio(
+            "11. Confidence in adapting to Korean work culture?",
+            ["Very confident", "Somewhat confident", "Neutral", "Not confident"],
+            key="cultural_adaptability"
         )
-        
-        responses['work_location'] = st.radio(
-            "14. Where would you prefer to work in Korea?",
-            ["Seoul", "Busan", "Other major city", "Smaller city/rural"],
-            key="q14"
+        responses['work_environment'] = st.radio(
+            "14. Preferred work environment?",
+            ["Structured corporate", "Startup/innovative", "Research/academic", "Flexible/remote"],
+            key="work_environment"
         )
-        
+        responses['team_work'] = st.radio(
+            "15. How do you prefer to work on projects?",
+            ["In a team", "Independently", "Combination of both", "Leading others"],
+            key="team_work"
+        )
+        # Career Exploration
+        st.markdown('<div class="section-header">📍 Career Exploration</div>', unsafe_allow_html=True)
         responses['industry_interest'] = st.radio(
-            "15. Which industry interests you most?",
-            ["Technology/IT", "Manufacturing", "Healthcare", "Education", "Entertainment/Media", "Finance", "Other"],
-            key="q15"
+            "16. Which industries would you like to explore first in Korea?",
+            ["Technology/IT", "Finance/Consulting", "Healthcare", "Education", "Startups", "Entertainment/Media", "Green/Energy", "Other"],
+            key="industry_interest"
         )
-        
-        # Submit button
+        responses['location_preference'] = st.radio(
+            "17. Preferred city or region for work in Korea?",
+            ["Seoul", "Busan", "Other major city", "Smaller city/rural area"],
+            key="work_hours_preference"
+        )
+        responses['career_orientation'] = st.radio(
+            "18. Which best describes your career orientation?",
+            ["Innovation-focused", "Stability-focused", "Balanced", "Exploration/Flexible"],
+            key="career_orientation"
+        )
         st.markdown("---")
         submitted = st.form_submit_button("🎯 Get My Job Recommendations", use_container_width=True)
         
@@ -212,65 +186,52 @@ def create_survey_form():
     return None
 
 def generate_job_recommendation(client: OpenAI, responses: Dict[str, Any]) -> str:
-    """Generate personalized job recommendation using OpenAI GPT-4."""
+    """Generate personalized job recommendation using OpenAI GPT-4o-mini (cheaper & faster)."""
     
-    # Create a comprehensive prompt based on survey responses
     prompt = f"""
-    Based on the following PESTLE survey responses from a job seeker interested in working in South Korea, 
-    provide a personalized job recommendation. Consider the current South Korean job market trends, 
-    major industries, and realistic opportunities.
+    You are a career counselor specializing in the South Korean job market for Indian Students.
+    Based on the following survey responses, provide a concise but tailored job recommendation for an Indian Student. 
+    Keep it practical, realistic, and specific to South Korea.
 
     Survey Responses:
-    - Visa Status: {responses.get('visa_status')}
-    - Sector Preference: {responses.get('sector_preference')}
-    - Regulatory Comfort: {responses.get('regulatory_comfort')}/5
-    - Salary Importance: {responses.get('salary_importance')}
-    - Work Hours Preference: {responses.get('work_hours')}
-    - Job Stability vs Growth: {responses.get('job_stability')}
-    - Korean Language Level: {responses.get('korean_language')}
-    - Work Environment Preferences: {responses.get('work_environment')}
-    - Cultural Adaptability: {responses.get('cultural_adaptability')}/5
-    - Technology Comfort: {responses.get('tech_comfort')}
-    - Digital Skills: {responses.get('digital_skills')}
-    - AI Interest Level: {responses.get('ai_interest')}/5
-    - Compliance Work Attitude: {responses.get('compliance_work')}
-    - Sustainability Importance: {responses.get('sustainability_interest')}
-    - Green Sector Interests: {responses.get('green_sectors')}
+    Sector Preference: {responses.get('sector_preference')}
+    Job Stability vs Growth: {responses.get('job_stability')}
+    Work Hours Preference: {responses.get('work_hours')}
+    Korean Language Level: {responses.get('korean_language')}
+    Cultural Adaptability: {responses.get('cultural_adaptability')}
+    Tech Comfort: {responses.get('tech_comfort')}
+    Digital Skills: {responses.get('digital_skills')}
+    AI Interest: {responses.get('ai_interest')}
+    Work Environment Preference: {responses.get('work_environment')}
+    Team Work Preference: {responses.get('team_work')}
+    Industry Interest: {responses.get('industry_interest')}
+    Location Preference: {responses.get('location_preference')}
+    Career Orientation: {responses.get('career_orientation')}
 
     Please provide:
-    1. **Primary Job Recommendation**: Specific job title and industry
-    2. **Why This Fits**: Explanation based on their responses
-    3. **Alternative Options**: 2-3 other suitable job roles
-    4. **Industry Insights**: Brief overview of the recommended sector in South Korea
-    5. **Next Steps**: Practical advice for pursuing this career path in South Korea
-    6. **Salary Expectations**: Realistic salary ranges in KRW
-    7. **Required Skills**: Key skills they should develop
+    1. Primary Job Recommendation (specific role + Potential Companies + industry)
+    2. Why This Fits (link to responses)
+    3. 2–3 Alternative Options
+    4. Industry Outlook (brief, 2 sentences max)
+    5. Next Steps (practical advice for pursuing this career in Korea)
+    6. Required Skills (short bullet list)
+    7. Salary Range (Inr, realistic)
+    8. Mention How Indians In Korea (IIK), ISRK (Indian Student Researchers In Korea) and SkalePlus are Helpfull with several processes, as well as the Indian Embassy In Seoul
 
-    Focus on realistic opportunities in South Korea's major industries like:
-    - Technology (Samsung, LG, Naver, Kakao)
-    - Manufacturing (automotive, shipbuilding, steel)
-    - Healthcare and eldercare
-    - Education (English teaching, international schools)
-    - Finance and consulting
-    - Entertainment and media (K-pop, gaming)
-    - Green energy and sustainability
-    - E-commerce and logistics
-
-    Keep the response practical, encouraging, and specific to the South Korean market.
+    Focus on sectors like technology, manufacturing, healthcare, education, finance, entertainment, green energy, e-commerce, and logistics.
     """
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",  # cheaper, optimized for scale
             messages=[
-                {"role": "system", "content": "You are an expert career counselor specializing in the South Korean job market. Provide detailed, practical, and culturally-aware job recommendations."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=1500,
-            temperature=0.7
+            max_tokens=800,  # reduced for cost efficiency
+            temperature=0.6   # slightly lower for consistency
         )
         
-        return response.choices[0].message.content
+        return response.choices[0].message.content.strip()
         
     except Exception as e:
         return f"Error generating recommendation: {str(e)}. Please check your API key and try again."
@@ -292,29 +253,6 @@ def main():
     """Main application logic."""
     # Initialize OpenAI client
     client = initialize_openai_client()
-    
-    # Sidebar information
-    st.sidebar.markdown("### 📋 About This Survey")
-    st.sidebar.markdown("""
-    This survey uses the **PESTLE framework** to assess:
-    - **P**olitical factors (visa, sector preferences)
-    - **E**conomic factors (salary, work-life balance)
-    - **S**ocial factors (culture, language, environment)
-    - **T**echnological factors (digital skills, AI interest)
-    - **L**egal factors (compliance comfort)
-    - **E**nvironmental factors (sustainability focus)
-    """)
-    
-    st.sidebar.markdown("### 🇰🇷 About South Korea's Job Market")
-    st.sidebar.markdown("""
-    Key industries include:
-    - **Technology**: Samsung, LG, Naver, Kakao
-    - **Automotive**: Hyundai, Kia
-    - **Entertainment**: K-pop, gaming, media
-    - **Healthcare**: Aging society opportunities
-    - **Green Energy**: Government sustainability push
-    - **Education**: English teaching, international schools
-    """)
     
     # Main survey form
     responses = create_survey_form()
