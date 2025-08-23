@@ -85,7 +85,7 @@ def initialize_openai_client():
 
 def create_survey_form():
     """Create a fully multiple-choice career survey for Indian college students exploring the Korean job market."""
-    st.markdown('<div class="main-header"> 🇰🇷 Indoro - Labour Market Survey 🇮🇳 "</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header"> 🇰🇷 Indoro - Labour Market Survey 🇮🇳 </div>', unsafe_allow_html=True)
     st.markdown("### Discover which career paths in Korea align with your skills and interests!")
     st.markdown("---")
     
