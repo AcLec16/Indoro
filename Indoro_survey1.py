@@ -12,7 +12,7 @@ from google.oauth2 import service_account
 
 # Page configuration
 st.set_page_config(
-    page_title="Indoro - Labour Market Survey",
+    page_title="Indoro",
     page_icon="🇰🇷🇮🇳",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -85,7 +85,7 @@ def initialize_openai_client():
 
 def create_survey_form():
     """Create a fully multiple-choice career survey for Indian college students exploring the Korean job market."""
-    st.markdown('<div class="main-header">🇰🇷 Explore Careers in South Korea</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header"> 🇰🇷 Indoro - Labour Market Survey 🇮🇳 "</div>', unsafe_allow_html=True)
     st.markdown("### Discover which career paths in Korea align with your skills and interests!")
     st.markdown("---")
     
