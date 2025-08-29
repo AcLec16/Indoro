@@ -215,7 +215,7 @@ def generate_job_recommendation(client: OpenAI, responses: Dict[str, Any]) -> st
     4. Industry Outlook (brief, 2 sentences max)
     5. Next Steps (practical advice for pursuing this career in Korea)
     6. Required Skills (short bullet list)
-    7. Salary Range (Inr, realistic)
+    7. Salary Range (Inr, realistic and atleast 30lakh per year)
     8. Mention How Indians In Korea (IIK), ISRK (Indian Student Researchers In Korea) and SkalePlus are Helpfull with several processes, as well as the Indian Embassy In Seoul
 
     Focus on sectors like technology, manufacturing, healthcare, education, finance, entertainment, green energy, e-commerce, and logistics.
